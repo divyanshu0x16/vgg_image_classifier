@@ -1,7 +1,13 @@
 # baseline model for the dogs vs cats dataset
+import io
+import os
 import sys
-# import tensorflow as tf
-# from tensorflow import keras
+import numpy as np
+import matplotlib.pyplot as plt
+
+from tensorflow import image as tf_image
+from tensorflow import expand_dims as tf_expand_dims
+from tensorflow import summary
 from keras import backend as K
 from keras import callbacks
 from matplotlib import pyplot
@@ -16,6 +22,40 @@ from keras.layers import Flatten
 from keras.optimizers import SGD
 from keras.preprocessing.image import ImageDataGenerator
 from datetime import datetime
+
+logs_folder = "logs"
+if os.path.exists(logs_folder):
+    os.system(f"rm -rf {logs_folder}")
+
+def plot_to_image(figure):
+  """Converts the matplotlib plot specified by 'figure' to a PNG image and
+  returns it. The supplied figure is closed and inaccessible after this call."""
+  # Save the plot to a PNG in memory.
+  buf = io.BytesIO()
+  plt.savefig(buf, format='png')
+  # Closing the figure prevents it from being displayed directly inside
+  # the notebook.
+  plt.close(figure)
+  buf.seek(0)
+  # Convert PNG buffer to TF image
+  image = tf_image.decode_png(buf.getvalue(), channels=4)
+  # Add the batch dimension
+  image = tf_expand_dims(image, 0)
+  return image
+  
+def image_grid(images,label_arr,pred_arr):
+  """Return a 5x5 grid of the MNIST images as a matplotlib figure."""
+  # Create a figure to contain the plot.
+  figure = plt.figure(figsize=(50,50))
+  for i in range(40):
+    # Start next subplot.
+    plt.subplot(8, 5, i + 1, title=f'Actual :+{label_arr[i]}+| Pred : {pred_arr[i]}')
+    plt.xticks([])
+    plt.yticks([])
+    plt.grid(False)
+    plt.imshow(images[i], cmap=plt.cm.binary)
+
+  return figure
 
 def vgg1():
     model = Sequential()
@@ -125,17 +165,44 @@ def run_test_harness(model, data_augmentation = False,pretrained=False):
         datagen.mean = [123.68, 116.779, 103.939]
         train_it = datagen.flow_from_directory('dataset/train/', class_mode='binary', batch_size=64, target_size=(224, 224))
         test_it = datagen.flow_from_directory('dataset/test/', class_mode='binary', batch_size=64, target_size=(224, 224))
+        
 
     # fit model
     history = model.fit_generator(train_it, steps_per_epoch=len(train_it),
-    validation_data=test_it, validation_steps=len(test_it), epochs=50, verbose=1, callbacks=[tensorboard_callback],)
+                                validation_data=test_it, validation_steps=len(test_it), epochs=50, verbose=1, callbacks=[tensorboard_callback],)
     # evaluate model
+    
     _, acc = model.evaluate_generator(test_it, steps=len(test_it), verbose=1)
     print('> %.3f' % (acc * 100.0))
-    # learning curves
     summarize_diagnostics(history)   
+    
+    label_dict = {}
+    for key, value in test_it.class_indices.items():
+        label_dict[value] = key
+
+    x, y = test_it.next()
+    images = x
+    labels = y
+    predictions=model.predict(images)
+    # print(x.shape,y.shape)
+    label_vals=[]
+    pred_vals=[]
+
+    for j in range(len(labels)):
+        image = images[j]
+        label = labels[j]
+        pred=round(predictions[j][0])
+        # print(k, label_dict[int(label)], label_dict[pred])
+        label_vals.append(label_dict[int(label)])
+        pred_vals.append(label_dict[pred])
+        # k += 1
+
+    figure = image_grid(images, label_vals, pred_vals)
+    file_writer = summary.create_file_writer(logdir)
+    with file_writer.as_default():
+        summary.image("Training data", plot_to_image(figure), step=0)
 
 # entry point, run the test harness
 # print(vgg16().count_params()," VGG")
 # print(mlp_model().count_params(), " MLP")
-run_test_harness(model= mlp_model(), data_augmentation=False,pretrained=False)
+run_test_harness(model= vgg1(), data_augmentation=False,pretrained=False)
