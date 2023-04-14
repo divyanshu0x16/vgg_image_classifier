@@ -45,6 +45,25 @@ def vgg3():
     model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
+#ChatGPT
+def mlp_model():
+    # Define the number of units in each layer of the MLP
+    units = [ 144, 64, 32, 16, 1]
+    # Create a Sequential model
+    model = Sequential()
+    # Add dense layers to the model with the specified number of units
+    # Flatten the input into a 1D array
+    model.add(Flatten(input_shape=(200, 200, 3)))
+
+    for i in range(len(units)):
+        model.add(Dense(units[i], activation='relu'))
+    # Print the summary of the model to see the total number of parameters
+    model.build()
+    model.summary()
+    opt = SGD(lr=0.001, momentum=0.9)
+    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    return model
+
 def vgg16():
      # load model
     model = VGG16(include_top=False, input_shape=(224, 224, 3))
@@ -114,7 +133,9 @@ def run_test_harness(model, data_augmentation = False,pretrained=False):
     _, acc = model.evaluate_generator(test_it, steps=len(test_it), verbose=1)
     print('> %.3f' % (acc * 100.0))
     # learning curves
-    summarize_diagnostics(history)
+    summarize_diagnostics(history)   
 
 # entry point, run the test harness
-run_test_harness(model= vgg1(), data_augmentation=False,pretrained=False)
+# print(vgg16().count_params()," VGG")
+# print(mlp_model().count_params(), " MLP")
+run_test_harness(model= mlp_model(), data_augmentation=False,pretrained=False)
