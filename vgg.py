@@ -2,7 +2,7 @@
 import io
 import os
 import sys
-import time 
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -89,7 +89,7 @@ def vgg3():
 #ChatGPT
 def mlp_model():
     # Define the number of units in each layer of the MLP
-    units = [ 144, 64, 32, 16, 1]
+    units = [ 144, 64, 32, 16]
     # Create a Sequential model
     model = Sequential()
     # Add dense layers to the model with the specified number of units
@@ -98,6 +98,7 @@ def mlp_model():
 
     for i in range(len(units)):
         model.add(Dense(units[i], activation='relu'))
+    model.add(Dense(1,activation='sigmoid'))
     # Print the summary of the model to see the total number of parameters
     model.build()
     model.summary()
@@ -210,4 +211,4 @@ def run_test_harness(model, data_augmentation = False,pretrained=False):
 # entry point, run the test harness
 # print(vgg16().count_params()," VGG")
 # print(mlp_model().count_params(), " MLP")
-run_test_harness(model= vgg16(), data_augmentation=False,pretrained=True)
+run_test_harness(model= mlp_model(), data_augmentation=False,pretrained=False)
