@@ -34,3 +34,22 @@ Table with model comparision between models:-
 ![vgg16_accuracy](https://user-images.githubusercontent.com/62815174/232405044-b210ec92-0052-43a7-bd18-bfceaefe226b.png)
 
 ![vgg16_loss](https://user-images.githubusercontent.com/62815174/232405062-0f894ae8-c48c-4948-8ccf-9531b8d876e5.png)
+
+
+## Subjective Questions
+
+### Are the results as expected? Why or why not?
+
+The observed results align with expectations. For VGG1, VGG3 (without data augmentation), and the MLP model, the training accuracy is higher, but the testing accuracy is lower, indicating overfitting. This outcome was anticipated, as training for 50 epochs may not be sufficient for these models to generalize well to unseen data. On the other hand, VGG16 with transfer learning shows very low losses and perfect accuracy, which was expected as pretrained models can learn quickly from the dataset. Data augmentation proved beneficial for VGG3, as it improved testing accuracy by providing a more diverse set of images during training, preventing the model from memorizing the training data and promoting better generalization.
+
+### Does data augmentation help? Why or why not?
+
+Data augmentation proved beneficial for VGG3, as it improved testing accuracy by providing a more diverse set of images during training, preventing the model from memorizing the training data and promoting better generalization.
+
+### Does it matter how many epochs you fine tune the model? Why or why not?
+
+It does not matter much how many epochs we choose because after 5 epochs the losses are low . Uptill that point the model learns very quickly. 
+
+### Are there any particular images that the model is confused about? Why or why not?
+
+Yes there are some particular images that the model is confused about. The images where dogs have worn sunglasses or other things they are classified as parrot. Parrot images where there are close up shots and images contained multiple parrots, those images were misclassified as dogs.
