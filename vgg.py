@@ -2,6 +2,7 @@
 import io
 import os
 import sys
+import time 
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -168,10 +169,14 @@ def run_test_harness(model, data_augmentation = False,pretrained=False):
         
 
     # fit model
+    start_time = time.time()
     history = model.fit_generator(train_it, steps_per_epoch=len(train_it),
                                 validation_data=test_it, validation_steps=len(test_it), epochs=50, verbose=1, callbacks=[tensorboard_callback],)
     # evaluate model
-    
+    end_time = time.time()
+
+    print('Time: ', end_time-start_time)
+    print('No. of Parameters: ', model.count_params())
     _, acc = model.evaluate_generator(test_it, steps=len(test_it), verbose=1)
     print('> %.3f' % (acc * 100.0))
     summarize_diagnostics(history)   
@@ -205,4 +210,4 @@ def run_test_harness(model, data_augmentation = False,pretrained=False):
 # entry point, run the test harness
 # print(vgg16().count_params()," VGG")
 # print(mlp_model().count_params(), " MLP")
-run_test_harness(model= vgg1(), data_augmentation=False,pretrained=False)
+run_test_harness(model= vgg16(), data_augmentation=False,pretrained=True)
