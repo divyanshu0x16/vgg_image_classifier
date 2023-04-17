@@ -8,7 +8,7 @@ Table with model comparision between models:-
 |VGG(3 block)                |205.74       |0.1331       |0.9821           |0.725           |10333505                 |
 |VGG(3 block) -Data augmented|261.7763922  |0.3806       |0.8125           |0.8             |10333505                 |
 |Tranfer Learning(VGG16)     |743.9707832  |1.28E-14     |1                |3.05E-13        |17926209                 |
-
+|MLP Model                   |172.1257512  |0.1665       |0.9625           |0.725           |17292049                 | 
 
 ### VGG 1
 
@@ -34,3 +34,9 @@ Table with model comparision between models:-
 ![vgg16_accuracy](https://user-images.githubusercontent.com/62815174/232405044-b210ec92-0052-43a7-bd18-bfceaefe226b.png)
 
 ![vgg16_loss](https://user-images.githubusercontent.com/62815174/232405062-0f894ae8-c48c-4948-8ccf-9531b8d876e5.png)
+
+### MLP Model
+
+![mlp_accuracy](https://user-images.githubusercontent.com/62815174/232411706-ae1759db-ff55-43b5-8f40-d14f804ba9cf.png)
+
+![mlp_loss](https://user-images.githubusercontent.com/62815174/232411738-9b91dc43-0fcd-4b96-92bd-8ffa1cc7d8df.png)
