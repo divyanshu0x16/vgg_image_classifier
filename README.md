@@ -8,7 +8,7 @@ Table with model comparision between models:-
 |VGG(3 block)                |205.74       |0.1331       |0.9821           |0.725           |10333505                 |
 |VGG(3 block) -Data augmented|261.7763922  |0.3806       |0.8125           |0.8             |10333505                 |
 |Tranfer Learning(VGG16)     |743.9707832  |1.28E-14     |1                |3.05E-13        |17926209                 |
-
+|MLP Model                   |172.1257512  |0.1665       |0.9625           |0.725           |17292049                 | 
 
 ### VGG 1
 
