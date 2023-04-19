@@ -53,3 +53,7 @@ It does not matter much how many epochs we choose because after 5 epochs the los
 ### Are there any particular images that the model is confused about? Why or why not?
 
 Yes there are some particular images that the model is confused about. The images where dogs have worn sunglasses or other things they are classified as parrot. Parrot images where there are close up shots and images contained multiple parrots, those images were misclassified as dogs.
+
+### Create a MLP model with comparable number of parameters as VGG16 and compare your performance with the other models in the table. You can choose the distribution of number of neurons and number of layers. What can you conclude? 
+
+We can conclude that the architecture plays a signifcant role in determining the performance on a given task. Even though they have similar number of paramters, the use of conolutional layers, allows VGG16 to learn much better from image data. 
